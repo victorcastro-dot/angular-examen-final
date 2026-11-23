@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Inscripcion, Taller } from '../models';
+import { Inscripcion, NuevaInscripcion, Taller } from '../models';
 
 const DB_NAME = 'talleresDB';
 const DB_VERSION = 1;
@@ -18,6 +18,14 @@ function req<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
+  });
+}
+
+function done(tx: IDBTransaction): Promise<void> {
+  return new Promise((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
   });
 }
 
@@ -63,5 +71,74 @@ export class DbService {
   async getInscripcion(id: number): Promise<Inscripcion | undefined> {
     const db = await this.dbPromise;
     return req(db.transaction('inscripciones').objectStore('inscripciones').get(id));
+  }
+
+  // Reglas: el taller debe tener cupo y el mismo CI no puede inscribirse dos veces al mismo taller
+  async inscribir(datos: NuevaInscripcion): Promise<number> {
+    const db = await this.dbPromise;
+    const tx = db.transaction(['talleres', 'inscripciones'], 'readwrite');
+    const talleres = tx.objectStore('talleres');
+    const inscripciones = tx.objectStore('inscripciones');
+
+    const taller = await req<Taller | undefined>(talleres.get(datos.tallerId));
+    if (!taller) {
+      tx.abort();
+      throw new Error('El taller seleccionado no existe.');
+    }
+    if (taller.cupoDisponible <= 0) {
+      tx.abort();
+      throw new Error(`El taller "${taller.nombre}" ya no tiene cupos disponibles.`);
+    }
+
+    const todas = await req<Inscripcion[]>(inscripciones.getAll());
+    const repetida = todas.some(
+      (i) => i.tallerId === datos.tallerId && i.ci === datos.ci && i.estado === 'Activa',
+    );
+    if (repetida) {
+      tx.abort();
+      throw new Error(`El estudiante con CI ${datos.ci} ya está inscrito en "${taller.nombre}".`);
+    }
+
+    taller.cupoDisponible--;
+    talleres.put(taller);
+
+    const nueva: Inscripcion = {
+      ...datos,
+      tallerNombre: taller.nombre,
+      fecha: new Date().toISOString(),
+      estado: 'Activa',
+    };
+    const id = await req(inscripciones.add(nueva));
+    await done(tx);
+    return id as number;
+  }
+
+  // Solo se puede retirar una vez y devuelve el cupo al taller
+  async retirar(id: number): Promise<void> {
+    const db = await this.dbPromise;
+    const tx = db.transaction(['talleres', 'inscripciones'], 'readwrite');
+    const talleres = tx.objectStore('talleres');
+    const inscripciones = tx.objectStore('inscripciones');
+
+    const insc = await req<Inscripcion | undefined>(inscripciones.get(id));
+    if (!insc) {
+      tx.abort();
+      throw new Error('La inscripción no existe.');
+    }
+    if (insc.estado !== 'Activa') {
+      tx.abort();
+      throw new Error('Esta inscripción ya fue retirada.');
+    }
+
+    insc.estado = 'Retirada';
+    insc.fechaRetiro = new Date().toISOString();
+    inscripciones.put(insc);
+
+    const taller = await req<Taller | undefined>(talleres.get(insc.tallerId));
+    if (taller) {
+      taller.cupoDisponible = Math.min(taller.cupoDisponible + 1, taller.cupoTotal);
+      talleres.put(taller);
+    }
+    await done(tx);
   }
 }
