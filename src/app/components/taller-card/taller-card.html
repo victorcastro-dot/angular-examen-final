@@ -1,6 +1,10 @@
 <div class="card taller-card h-100 border-0 shadow-sm">
   <div class="taller-portada" [style.background]="portada().fondo">
-    <i class="bi" [ngClass]="portada().icono"></i>
+    @if (!imagenFallo()) {
+      <img [src]="imagen()" [alt]="taller().nombre" loading="lazy" (error)="imagenFallo.set(true)" />
+    } @else {
+      <i class="bi" [ngClass]="portada().icono"></i>
+    }
     <span class="badge bg-white text-dark position-absolute top-0 start-0 m-3">{{ taller().categoria }}</span>
   </div>
 

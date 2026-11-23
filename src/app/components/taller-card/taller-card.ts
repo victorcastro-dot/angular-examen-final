@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe, NgClass, TitleCasePipe } from '@angular/common';
 import { Taller } from '../../models';
 
@@ -30,6 +30,10 @@ export class TallerCard {
   inscribir = output<Taller>();
 
   portada = computed(() => PORTADAS[this.taller().categoria] ?? PORTADA_POR_DEFECTO);
+
+  // Si la foto no existe, se muestra la carátula con icono
+  imagen = computed(() => `img/talleres/${this.taller().id}.jpg`);
+  imagenFallo = signal(false);
 
   porcentajeLibre = computed(() => {
     const t = this.taller();
