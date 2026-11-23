@@ -18,6 +18,12 @@ main {
   flex: 1;
 }
 
+@media (max-width: 575.98px) {
+  .table > :not(caption) > * > * {
+    padding: 0.5rem 0.35rem;
+  }
+}
+
 .btn-outline-primary {
   --bs-btn-color: #0d9488;
   --bs-btn-border-color: #0d9488;
