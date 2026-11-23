@@ -1,0 +1,45 @@
+<h2 class="mb-3">Talleres disponibles</h2>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-md-6">
+    <input
+      type="search"
+      class="form-control"
+      placeholder="Buscar por nombre o instructor..."
+      [value]="busqueda()"
+      (input)="busqueda.set($any($event.target).value)"
+    />
+  </div>
+  <div class="col-8 col-md-4">
+    <select
+      class="form-select"
+      [value]="categoria()"
+      (change)="categoria.set($any($event.target).value)"
+    >
+      <option value="">Todas las categorías</option>
+      @for (c of categorias(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+  </div>
+  <div class="col-4 col-md-2 d-grid">
+    <button type="button" class="btn btn-outline-secondary" (click)="limpiar()">Limpiar</button>
+  </div>
+</div>
+
+@if (cargando()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else {
+  <p class="text-muted small">{{ filtrados().length }} taller(es) encontrado(s)</p>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+    @for (t of filtrados(); track t.id) {
+      <div class="col">
+        <app-taller-card [taller]="t" (inscribir)="irAInscribir($event)" />
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="alert alert-info">No hay talleres que coincidan con la búsqueda.</div>
+      </div>
+    }
+  </div>
+}
