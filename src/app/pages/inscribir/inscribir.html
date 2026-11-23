@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <h2 class="mb-3">Nueva inscripción</h2>
+
+    @if (errorGuardar()) {
+      <div class="alert alert-danger">{{ errorGuardar() }}</div>
+    }
+
+    <form class="card card-body shadow-sm" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="tallerId">Taller *</label>
+        <select id="tallerId" class="form-select" formControlName="tallerId" [class.is-invalid]="invalido('tallerId')">
+          <option [ngValue]="0" disabled>Seleccione un taller...</option>
+          @for (t of talleres(); track t.id) {
+            <option [ngValue]="t.id">
+              {{ t.nombre }} ({{ t.cupoDisponible > 0 ? t.cupoDisponible + ' cupos' : 'sin cupos' }})
+            </option>
+          }
+        </select>
+        <div class="invalid-feedback">Debe seleccionar un taller.</div>
+        @if (tallerSeleccionado(); as t) {
+          <div class="form-text">
+            Precio: {{ t.precio | currency: 'BOB' : 'Bs ' }} · Cupos libres: {{ t.cupoDisponible }}
+          </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="estudiante">Nombre completo *</label>
+        <input id="estudiante" class="form-control" formControlName="estudiante" [class.is-invalid]="invalido('estudiante')" />
+        <div class="invalid-feedback">
+          @if (form.controls.estudiante.hasError('required')) { El nombre es obligatorio. }
+          @else { El nombre debe tener al menos 3 letras. }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="ci">Carnet de identidad (CI) *</label>
+        <input id="ci" class="form-control" formControlName="ci" inputmode="numeric" [class.is-invalid]="invalido('ci')" />
+        <div class="invalid-feedback">
+          @if (form.controls.ci.hasError('required')) { El CI es obligatorio. }
+          @else { El CI debe tener solo números (entre 5 y 10 dígitos). }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="email">Correo electrónico *</label>
+        <input id="email" type="email" class="form-control" formControlName="email" [class.is-invalid]="invalido('email')" />
+        <div class="invalid-feedback">
+          @if (form.controls.email.hasError('required')) { El correo es obligatorio. }
+          @else { Ingrese un correo válido, por ejemplo nombre&#64;correo.com. }
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+          Guardar inscripción
+        </button>
+        <a routerLink="/talleres" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
