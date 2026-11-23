@@ -34,6 +34,28 @@ tr[role='button'] {
   --bs-btn-focus-shadow-rgb: 13, 148, 136;
 }
 
+.btn-limpiar {
+  --bs-btn-color: #0f766e;
+  --bs-btn-bg: #f0fdfa;
+  --bs-btn-border-color: #99f6e4;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #0d9488;
+  --bs-btn-hover-border-color: #0d9488;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0f766e;
+  --bs-btn-active-border-color: #0f766e;
+  --bs-btn-disabled-color: #94a3b8;
+  --bs-btn-disabled-bg: #f8fafc;
+  --bs-btn-disabled-border-color: #e2e8f0;
+  --bs-btn-disabled-opacity: 1;
+  font-weight: 500;
+}
+
+.input-group-text {
+  background-color: #f0fdfa;
+  color: #0f766e;
+}
+
 .form-control:focus,
 .form-select:focus {
   border-color: #5eead4;

@@ -20,6 +20,8 @@ export class Talleres implements OnInit {
 
   categorias = computed(() => [...new Set(this.talleres().map((t) => t.categoria))].sort());
 
+  hayFiltros = computed(() => this.busqueda().trim() !== '' || this.categoria() !== '');
+
   filtrados = computed(() => {
     const texto = this.busqueda().trim().toLowerCase();
     const cat = this.categoria();
