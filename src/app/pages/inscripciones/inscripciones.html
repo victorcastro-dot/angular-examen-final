@@ -3,7 +3,7 @@
   <select
     class="form-select w-auto"
     [value]="estado()"
-    (change)="estado.set($any($event.target).value)"
+    (change)="filtrarPorEstado($any($event.target).value)"
   >
     <option value="">Todos los estados</option>
     <option value="Activa">Activas</option>
@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (i of filtradas(); track i.id) {
+        @for (i of paginadas(); track i.id) {
           <tr role="button" (click)="verDetalle(i)">
             <td>{{ i.id }}</td>
             <td class="text-nowrap">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
@@ -44,5 +44,11 @@
       </tbody>
     </table>
   </div>
-  <p class="text-muted small">Toque una fila para ver el detalle.</p>
+  <app-paginador
+    [total]="filtradas().length"
+    [porPagina]="porPagina"
+    [pagina]="pagina()"
+    (cambiarPagina)="pagina.set($event)"
+  />
+  <p class="text-muted small mt-2 mb-0">Toque una fila para ver el detalle.</p>
 }
