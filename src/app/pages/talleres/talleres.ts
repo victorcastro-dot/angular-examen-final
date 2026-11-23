@@ -14,7 +14,7 @@ export class Talleres implements OnInit {
   private db = inject(DbService);
   private router = inject(Router);
 
-  readonly porPagina = 3;
+  readonly porPagina = 6;
 
   talleres = signal<Taller[]>([]);
   busqueda = signal('');
