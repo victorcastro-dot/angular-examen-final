@@ -1,59 +1,66 @@
-# AngularExamenFinal
+# Talleres UAB
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.7.
+Aplicación web en Angular para consultar talleres, inscribir estudiantes y retirar inscripciones. Los datos se guardan en el navegador con IndexedDB.
 
-## Development server
+## Funcionalidades
 
-To start a local development server, run:
+| Pantalla | Ruta | Descripción |
+|---|---|---|
+| Talleres | `/talleres` | Catálogo en tarjetas con búsqueda por texto y filtro por categoría. |
+| Inscribir | `/inscribir` | Formulario reactivo con validaciones. |
+| Mis inscripciones | `/inscripciones` | Historial con fecha y estado, filtrable por estado. |
+| Detalle | `/inscripciones/:id` | Datos de la inscripción y acción **Retirar inscripción**. |
 
-```bash
-ng serve
-```
+### Reglas del tema
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Cada inscripción ocupa un cupo del taller. Si no hay cupos, no se puede inscribir.
+- El mismo estudiante (CI) solo puede tener una inscripción activa por taller.
+- Al retirar una inscripción, su estado pasa a *Retirada* y el cupo vuelve al taller. Solo se puede retirar una vez.
 
-## Code scaffolding
+## Tecnologías
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular 22 (componentes standalone, signals, formularios reactivos, control de flujo `@if` / `@for`)
+- Bootstrap 5
+- IndexedDB
 
-```bash
-ng generate component component-name
-```
+## Requisitos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Node.js 22.22.3 o superior (o 24.15+)
+- npm
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Instalación y ejecución
 
 ```bash
-ng test
+git clone https://github.com/victorcastro-dot/angular-examen-final.git
+cd angular-examen-final
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+Abrir `http://localhost:4200/` en el navegador.
 
-For end-to-end (e2e) testing, run:
+## Compilar para producción
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Los archivos quedan en `dist/angular-examen-final/browser`.
 
-## Additional Resources
+## Estructura
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
+src/app/
+├── models.ts                      # Interfaces Taller e Inscripcion
+├── services/db.service.ts         # Acceso a IndexedDB
+├── components/taller-card/        # Componente hijo reutilizable
+└── pages/
+    ├── talleres/                  # Consulta principal
+    ├── inscribir/                 # Registro
+    ├── inscripciones/             # Historial
+    └── inscripcion-detalle/       # Detalle y retiro
+```
+
+## Autor
+
+Victor Castro
