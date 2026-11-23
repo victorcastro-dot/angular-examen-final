@@ -1,0 +1,48 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <h2 class="mb-0">Mis inscripciones</h2>
+  <select
+    class="form-select w-auto"
+    [value]="estado()"
+    (change)="estado.set($any($event.target).value)"
+  >
+    <option value="">Todos los estados</option>
+    <option value="Activa">Activas</option>
+    <option value="Retirada">Retiradas</option>
+  </select>
+</div>
+
+@if (cargando()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else if (filtradas().length === 0) {
+  <div class="alert alert-info">No hay inscripciones para mostrar.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Estudiante</th>
+          <th>Taller</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (i of filtradas(); track i.id) {
+          <tr role="button" (click)="verDetalle(i)">
+            <td>{{ i.id }}</td>
+            <td class="text-nowrap">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ i.estudiante | titlecase }}</td>
+            <td>{{ i.tallerNombre }}</td>
+            <td>
+              <span class="badge" [ngClass]="i.estado === 'Activa' ? 'text-bg-success' : 'text-bg-secondary'">
+                {{ i.estado }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <p class="text-muted small">Toque una fila para ver el detalle.</p>
+}
