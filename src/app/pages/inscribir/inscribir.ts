@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { DbService } from '../../services/db.service';
-import { Taller } from '../../models';
+import { Inscripcion, Taller } from '../../models';
 
 @Component({
   selector: 'app-inscribir',
@@ -17,21 +17,38 @@ export class Inscribir implements OnInit {
   private fb = inject(FormBuilder);
 
   talleres = signal<Taller[]>([]);
+  private inscripciones: Inscripcion[] = [];
   errorGuardar = signal('');
   guardando = signal(false);
 
-  form = this.fb.nonNullable.group({
-    estudiante: ['', [Validators.required, Validators.minLength(3)]],
-    ci: ['', [Validators.required, Validators.pattern(/^\d{5,10}$/)]],
-    email: ['', [Validators.required, Validators.email]],
-    tallerId: [0, [Validators.required, Validators.min(1)]],
-  });
+  form = this.fb.nonNullable.group(
+    {
+      estudiante: ['', [Validators.required, Validators.minLength(3)]],
+      ci: ['', [Validators.required, Validators.pattern(/^\d{5,10}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      tallerId: [0, [Validators.required, Validators.min(1)]],
+    },
+    { validators: (g) => this.reglasDelTema(g) },
+  );
 
   async ngOnInit() {
     this.talleres.set(await this.db.getTalleres());
+    this.inscripciones = await this.db.getInscripciones();
 
     const tallerId = Number(this.route.snapshot.queryParamMap.get('taller'));
     if (tallerId) this.form.controls.tallerId.setValue(tallerId);
+    this.form.updateValueAndValidity();
+  }
+
+  // Reglas del tema: cupo disponible y sin inscripción repetida del mismo CI
+  private reglasDelTema(g: AbstractControl): ValidationErrors | null {
+    const { tallerId, ci } = g.value as { tallerId: number; ci: string };
+    const taller = this.talleres?.().find((t) => t.id === Number(tallerId));
+    if (taller && taller.cupoDisponible <= 0) return { sinCupo: true };
+    const repetida = this.inscripciones?.some(
+      (i) => i.tallerId === Number(tallerId) && i.ci === ci && i.estado === 'Activa',
+    );
+    return repetida ? { duplicada: true } : null;
   }
 
   tallerSeleccionado(): Taller | undefined {
