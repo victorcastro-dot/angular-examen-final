@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f7fb;
+}
+
+main {
+  flex: 1;
+}
+
+tr[role='button'] {
+  cursor: pointer;
+}
