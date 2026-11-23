@@ -1,8 +1,17 @@
+:root {
+  --bs-primary: #0d9488;
+  --bs-primary-rgb: 13, 148, 136;
+  --bs-link-color: #0f766e;
+  --bs-link-color-rgb: 15, 118, 110;
+  --bs-link-hover-color: #115e59;
+  --bs-link-hover-color-rgb: 17, 94, 89;
+}
+
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f6f7fb;
+  background-color: #f4f7f7;
 }
 
 main {
@@ -13,6 +22,33 @@ tr[role='button'] {
   cursor: pointer;
 }
 
+.btn-primary {
+  --bs-btn-bg: #0d9488;
+  --bs-btn-border-color: #0d9488;
+  --bs-btn-hover-bg: #0f766e;
+  --bs-btn-hover-border-color: #0f766e;
+  --bs-btn-active-bg: #115e59;
+  --bs-btn-active-border-color: #115e59;
+  --bs-btn-disabled-bg: #0d9488;
+  --bs-btn-disabled-border-color: #0d9488;
+  --bs-btn-focus-shadow-rgb: 13, 148, 136;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5eead4;
+  box-shadow: 0 0 0 0.25rem rgba(13, 148, 136, 0.25);
+}
+
 .navbar-teal {
   background-color: #0d9488;
+
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 0.5rem;
+  }
+}
+
+.hero {
+  background: linear-gradient(135deg, #0d9488, #0e7490);
 }
