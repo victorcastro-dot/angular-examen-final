@@ -2,18 +2,18 @@
   <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 } @else if (!inscripcion()) {
   <div class="alert alert-warning">
-    <h5 class="alert-heading">Inscripción no encontrada</h5>
+    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-1"></i>Inscripción no encontrada</h5>
     <p class="mb-3">No existe una inscripción con ese número.</p>
-    <a routerLink="/inscripciones" class="btn btn-outline-dark">← Volver al historial</a>
+    <a routerLink="/inscripciones" class="btn btn-outline-dark"><i class="bi bi-arrow-left me-1"></i>Volver al historial</a>
   </div>
 } @else {
   @let i = inscripcion()!;
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
-      <a routerLink="/inscripciones" class="btn btn-link px-0 mb-2">← Volver al historial</a>
+      <a routerLink="/inscripciones" class="btn btn-link px-0 mb-2"><i class="bi bi-arrow-left me-1"></i>Volver al historial</a>
 
       @if (mensaje()) {
-        <div class="alert alert-success">{{ mensaje() }}</div>
+        <div class="alert alert-success"><i class="bi bi-check-circle-fill me-1"></i>{{ mensaje() }}</div>
       }
       @if (error()) {
         <div class="alert alert-danger">{{ error() }}</div>
@@ -44,7 +44,7 @@
         </ul>
         <div class="card-body">
           @if (i.estado === 'Activa') {
-            <button type="button" class="btn btn-danger w-100" (click)="retirar()">Retirar inscripción</button>
+            <button type="button" class="btn btn-danger w-100" (click)="retirar()"><i class="bi bi-x-circle me-1"></i>Retirar inscripción</button>
           } @else {
             <p class="text-muted mb-0">Esta inscripción ya fue retirada y no admite más cambios.</p>
           }
