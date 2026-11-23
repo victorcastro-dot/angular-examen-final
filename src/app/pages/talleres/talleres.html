@@ -1,40 +1,47 @@
-<h2 class="mb-3">Talleres disponibles</h2>
+<section class="hero rounded-4 text-white p-4 p-md-5 mb-4">
+  <h1 class="fw-bold mb-2">Talleres disponibles</h1>
+  <p class="mb-0 opacity-75">Encuentra un taller, revisa los cupos libres e inscríbete en pocos pasos.</p>
+</section>
 
-<div class="row g-2 mb-4">
-  <div class="col-12 col-md-6">
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Buscar por nombre o instructor..."
-        [value]="busqueda()"
-        (input)="busqueda.set($any($event.target).value)"
-      />
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body">
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Buscar por nombre o instructor..."
+            [value]="busqueda()"
+            (input)="busqueda.set($any($event.target).value)"
+          />
+        </div>
+      </div>
+      <div class="col-8 col-md-4">
+        <select
+          class="form-select"
+          [value]="categoria()"
+          (change)="categoria.set($any($event.target).value)"
+        >
+          <option value="">Todas las categorías</option>
+          @for (c of categorias(); track c) {
+            <option [value]="c">{{ c }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-4 col-md-2 d-grid">
+        <button type="button" class="btn btn-outline-secondary" (click)="limpiar()"><i class="bi bi-x-lg me-1"></i>Limpiar</button>
+      </div>
     </div>
-  </div>
-  <div class="col-8 col-md-4">
-    <select
-      class="form-select"
-      [value]="categoria()"
-      (change)="categoria.set($any($event.target).value)"
-    >
-      <option value="">Todas las categorías</option>
-      @for (c of categorias(); track c) {
-        <option [value]="c">{{ c }}</option>
-      }
-    </select>
-  </div>
-  <div class="col-4 col-md-2 d-grid">
-    <button type="button" class="btn btn-outline-secondary" (click)="limpiar()"><i class="bi bi-x-lg me-1"></i>Limpiar</button>
   </div>
 </div>
 
 @if (cargando()) {
   <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 } @else {
-  <p class="text-muted small">{{ filtrados().length }} taller(es) encontrado(s)</p>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+  <p class="text-muted small mb-3">{{ filtrados().length }} taller(es) encontrado(s)</p>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
     @for (t of filtrados(); track t.id) {
       <div class="col">
         <app-taller-card [taller]="t" (inscribir)="irAInscribir($event)" />
