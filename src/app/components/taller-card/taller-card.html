@@ -3,8 +3,8 @@
     <span class="badge text-bg-secondary align-self-start mb-2">{{ taller().categoria }}</span>
     <h5 class="card-title">{{ taller().nombre }}</h5>
     <p class="card-text text-muted small mb-2">
-      Instructor: {{ taller().instructor | titlecase }}<br />
-      Inicio: {{ taller().fechaInicio | date: 'dd/MM/yyyy' }}
+      <i class="bi bi-person me-1"></i>Instructor: {{ taller().instructor | titlecase }}<br />
+      <i class="bi bi-calendar-event me-1"></i>Inicio: {{ taller().fechaInicio | date: 'dd/MM/yyyy' }}
     </p>
     <p class="fs-5 fw-semibold mb-2">{{ taller().precio | currency: 'BOB' : 'Bs ' }}</p>
 
@@ -29,7 +29,7 @@
       [disabled]="taller().cupoDisponible === 0"
       (click)="onInscribir()"
     >
-      Inscribirme
+      <i class="bi bi-plus-circle me-1"></i>Inscribirme
     </button>
   </div>
 </div>
