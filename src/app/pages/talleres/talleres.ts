@@ -3,19 +3,23 @@ import { Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 import { Taller } from '../../models';
 import { TallerCard } from '../../components/taller-card/taller-card';
+import { Paginador } from '../../components/paginador/paginador';
 
 @Component({
   selector: 'app-talleres',
-  imports: [TallerCard],
+  imports: [TallerCard, Paginador],
   templateUrl: './talleres.html',
 })
 export class Talleres implements OnInit {
   private db = inject(DbService);
   private router = inject(Router);
 
+  readonly porPagina = 3;
+
   talleres = signal<Taller[]>([]);
   busqueda = signal('');
   categoria = signal('');
+  pagina = signal(1);
   cargando = signal(true);
 
   categorias = computed(() => [...new Set(this.talleres().map((t) => t.categoria))].sort());
@@ -34,14 +38,30 @@ export class Talleres implements OnInit {
     );
   });
 
+  paginados = computed(() => {
+    const inicio = (this.pagina() - 1) * this.porPagina;
+    return this.filtrados().slice(inicio, inicio + this.porPagina);
+  });
+
   async ngOnInit() {
     this.talleres.set(await this.db.getTalleres());
     this.cargando.set(false);
   }
 
+  buscar(texto: string) {
+    this.busqueda.set(texto);
+    this.pagina.set(1);
+  }
+
+  filtrarPorCategoria(categoria: string) {
+    this.categoria.set(categoria);
+    this.pagina.set(1);
+  }
+
   limpiar() {
     this.busqueda.set('');
     this.categoria.set('');
+    this.pagina.set(1);
   }
 
   irAInscribir(taller: Taller) {
