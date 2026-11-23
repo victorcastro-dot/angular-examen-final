@@ -25,11 +25,12 @@
           <th>Estudiante</th>
           <th>Taller</th>
           <th>Estado</th>
+          <th class="text-center">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (i of paginadas(); track i.id) {
-          <tr role="button" (click)="verDetalle(i)">
+          <tr>
             <td>{{ i.id }}</td>
             <td class="text-nowrap">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
             <td>{{ i.estudiante | titlecase }}</td>
@@ -38,6 +39,17 @@
               <span class="badge" [ngClass]="i.estado === 'Activa' ? 'text-bg-success' : 'text-bg-secondary'">
                 {{ i.estado }}
               </span>
+            </td>
+            <td class="text-center">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                (click)="verDetalle(i)"
+                title="Ver detalle"
+                [attr.aria-label]="'Ver detalle de la inscripción ' + i.id"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
             </td>
           </tr>
         }
@@ -50,5 +62,4 @@
     [pagina]="pagina()"
     (cambiarPagina)="pagina.set($event)"
   />
-  <p class="text-muted small mt-2 mb-0">Toque una fila para ver el detalle.</p>
 }
