@@ -1,27 +1,26 @@
 <nav class="navbar navbar-expand-md navbar-dark navbar-teal sticky-top shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" routerLink="/talleres"><i class="bi bi-mortarboard-fill me-1"></i>Talleres UAB</a>
+    <a class="navbar-brand fw-bold" routerLink="/talleres" (click)="menuAbierto.set(false)"><i class="bi bi-mortarboard-fill me-1"></i>Talleres UAB</a>
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#menu"
       aria-controls="menu"
-      aria-expanded="false"
+      [attr.aria-expanded]="menuAbierto()"
       aria-label="Abrir menú"
+      (click)="menuAbierto.set(!menuAbierto())"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="menu">
+    <div class="collapse navbar-collapse" id="menu" [class.show]="menuAbierto()">
       <ul class="navbar-nav ms-auto gap-md-1">
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/talleres" routerLinkActive="active"><i class="bi bi-grid me-1"></i>Talleres</a>
+          <a class="nav-link px-3" routerLink="/talleres" routerLinkActive="active" (click)="menuAbierto.set(false)"><i class="bi bi-grid me-1"></i>Talleres</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/inscribir" routerLinkActive="active"><i class="bi bi-pencil-square me-1"></i>Inscribir</a>
+          <a class="nav-link px-3" routerLink="/inscribir" routerLinkActive="active" (click)="menuAbierto.set(false)"><i class="bi bi-pencil-square me-1"></i>Inscribir</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/inscripciones" routerLinkActive="active"><i class="bi bi-list-check me-1"></i>Mis inscripciones</a>
+          <a class="nav-link px-3" routerLink="/inscripciones" routerLinkActive="active" (click)="menuAbierto.set(false)"><i class="bi bi-list-check me-1"></i>Mis inscripciones</a>
         </li>
       </ul>
     </div>
