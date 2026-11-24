@@ -53,7 +53,7 @@ Aplicación web en Angular para consultar talleres, inscribir estudiantes y reti
 | Requisito | Dónde se aplica |
 |---|---|
 | Componentes hijos con `input()` / `output()` | `TallerCard` (recibe el taller y emite *inscribir*) y `Paginador` (recibe total, página y tamaño, y emite *cambiarPagina*). |
-| Servicio inyectado e IndexedDB | `DbService` guarda, lee y actualiza talleres e inscripciones. Los datos iniciales se cargan una sola vez. |
+| Servicio inyectado e IndexedDB | `DbService` guarda, lee y actualiza talleres e inscripciones. Los datos iniciales se cargan una sola vez. La versión 2 de la base agrega 5 talleres nuevos (12 en total) sin borrar las inscripciones existentes. |
 | Rutas | Cuatro pantallas, ruta inicial `/talleres` y detalle con parámetro `:id`. |
 | Pipes | `date`, `currency`, `titlecase`. |
 | Directivas | `routerLinkActive`, `ngClass`, `formControlName`. |
@@ -98,7 +98,7 @@ src/app/
     ├── inscripciones/             # Historial
     └── inscripcion-detalle/       # Detalle y retiro
 
-public/img/talleres/               # Fotos de los talleres (1.jpg … 7.jpg)
+public/img/talleres/               # Fotos de los talleres, nombradas por id (1.jpg, 2.jpg…)
 ```
 
 ## Autor
