@@ -35,9 +35,9 @@ export class TallerCard {
   imagen = computed(() => `img/talleres/${this.taller().id}.jpg`);
   imagenFallo = signal(false);
 
-  porcentajeLibre = computed(() => {
+  porcentajeOcupado = computed(() => {
     const t = this.taller();
-    return t.cupoTotal ? Math.round((t.cupoDisponible / t.cupoTotal) * 100) : 0;
+    return t.cupoTotal ? Math.round(((t.cupoTotal - t.cupoDisponible) / t.cupoTotal) * 100) : 0;
   });
 
   onInscribir() {
