@@ -14,7 +14,7 @@ Aplicación web en Angular para consultar talleres, inscribir estudiantes y reti
 ### Talleres
 
 - Cada tarjeta muestra una foto del taller. Si la foto no existe, muestra una carátula con un icono según la categoría.
-- Barra de cupos que cambia de color: verde con cupos y amarilla cuando quedan pocos. Sin cupos se muestra "Sin cupos" en rojo y el botón se desactiva.
+- Barra de cupos ocupados que crece con cada inscripción: verde, amarilla cuando quedan 3 o menos y roja cuando se llena. Sin cupos se muestra "Sin cupos" y el botón se desactiva.
 - La búsqueda y el filtro funcionan juntos. El botón **Limpiar** solo se activa cuando hay algo que limpiar.
 - El botón **Inscribirme** abre el formulario con el taller ya seleccionado.
 

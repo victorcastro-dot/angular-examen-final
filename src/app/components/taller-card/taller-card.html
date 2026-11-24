@@ -33,13 +33,22 @@
           }
         </span>
       </div>
-      <div class="progress mb-3" style="height: 6px">
+      <div
+        class="progress mb-3"
+        style="height: 6px"
+        role="progressbar"
+        [attr.aria-valuenow]="porcentajeOcupado()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [attr.aria-label]="'Cupos ocupados: ' + porcentajeOcupado() + '%'"
+      >
         <div
           class="progress-bar"
-          [style.width.%]="porcentajeLibre()"
+          [style.width.%]="porcentajeOcupado()"
           [ngClass]="{
             'bg-success': taller().cupoDisponible > 3,
-            'bg-warning': taller().cupoDisponible > 0 && taller().cupoDisponible <= 3
+            'bg-warning': taller().cupoDisponible > 0 && taller().cupoDisponible <= 3,
+            'bg-danger': taller().cupoDisponible === 0
           }"
         ></div>
       </div>
