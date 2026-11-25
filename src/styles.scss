@@ -98,6 +98,33 @@ main {
   }
 }
 
+.btn-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #0d9488;
+  font-size: 1.25rem;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    color: #0f766e;
+    background-color: #f0fdfa;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #0d9488;
+    outline-offset: 2px;
+  }
+}
+
 .btn-outline-primary {
   --bs-btn-color: #0d9488;
   --bs-btn-border-color: #0d9488;
