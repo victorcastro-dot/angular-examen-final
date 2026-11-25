@@ -31,7 +31,7 @@ Aplicación web en Angular para consultar talleres, inscribir estudiantes y reti
 
 - Búsqueda por nombre del estudiante o del taller, que funciona junto con el filtro de estado.
 - Al cambiar la búsqueda o el filtro de estado, la paginación vuelve a la página 1.
-- La columna **Acciones** tiene un botón con icono de ojo para abrir el detalle.
+- La columna **Acciones** muestra solo un icono de ojo, sin marco, para abrir el detalle. Al pasar el mouse aparece un círculo suave detrás del icono.
 - Al retirar una inscripción, el estado cambia a *Retirada*, se registra la fecha de retiro y el cupo vuelve al taller.
 
 ### Reglas del tema
