@@ -2,6 +2,10 @@
 
 Aplicación web en Angular para consultar talleres, inscribir estudiantes y retirar inscripciones. Los datos se guardan en el navegador con IndexedDB, así que se conservan al cerrar y volver a abrir la aplicación.
 
+**Aplicación publicada:** https://talleres.madelansoft.com (también en https://talleres-uab.pages.dev)
+
+> Cada navegador guarda su propia copia de los datos en IndexedDB, así que las inscripciones hechas en un navegador no aparecen en otro.
+
 ## Funcionalidades
 
 | Pantalla | Ruta | Descripción |
@@ -82,6 +86,15 @@ npm run build
 ```
 
 Los archivos quedan en `dist/angular-examen-final/browser`.
+
+## Publicación
+
+La aplicación está publicada en Cloudflare Pages (proyecto `talleres-uab`). Para publicar una nueva versión:
+
+```bash
+npm run build
+npx wrangler pages deploy dist/angular-examen-final/browser --project-name talleres-uab --branch main
+```
 
 ## Estructura
 
