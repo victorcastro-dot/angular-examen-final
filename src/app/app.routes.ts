@@ -6,9 +6,9 @@ import { InscripcionDetalle } from './pages/inscripcion-detalle/inscripcion-deta
 
 export const routes: Routes = [
   { path: '', redirectTo: 'talleres', pathMatch: 'full' },
-  { path: 'talleres', component: Talleres, title: 'Talleres' },
-  { path: 'inscribir', component: Inscribir, title: 'Nueva inscripción' },
-  { path: 'inscripciones', component: Inscripciones, title: 'Mis inscripciones' },
-  { path: 'inscripciones/:id', component: InscripcionDetalle, title: 'Detalle de inscripción' },
+  { path: 'talleres', component: Talleres, title: 'Talleres · Talleres UAB' },
+  { path: 'inscribir', component: Inscribir, title: 'Nueva inscripción · Talleres UAB' },
+  { path: 'inscripciones', component: Inscripciones, title: 'Mis inscripciones · Talleres UAB' },
+  { path: 'inscripciones/:id', component: InscripcionDetalle, title: 'Detalle de inscripción · Talleres UAB' },
   { path: '**', redirectTo: 'talleres' },
 ];
