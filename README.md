@@ -47,6 +47,15 @@ Aplicación web en Angular para consultar talleres, inscribir estudiantes y reti
 - Las tarjetas se ordenan en 1, 2 o 3 columnas según el ancho de la pantalla.
 - En celular la tabla del historial oculta el número y acorta la fecha para que el estado y el botón de detalle siempre estén visibles.
 
+### Metadatos y vista previa al compartir
+
+En `src/index.html`:
+
+- Título, descripción y color de tema (teal) para la barra del navegador en el celular.
+- Favicon con el birrete (`favicon.svg`) e icono para la pantalla de inicio del celular (`apple-touch-icon.png`).
+- Etiquetas Open Graph y Twitter (`og:title`, `og:description`, `og:image`…) con una imagen de 1200×630 (`og-image.jpg`). Al compartir el enlace por WhatsApp, Facebook o Telegram se ve una tarjeta con la imagen, el título y la descripción.
+- Cada pantalla cambia el título de la pestaña, por ejemplo "Mis inscripciones · Talleres UAB".
+
 ## Tecnologías
 
 - Angular 22 (componentes standalone, signals, formularios reactivos, control de flujo `@if` / `@for`)
@@ -112,7 +121,13 @@ src/app/
     ├── inscripciones/             # Historial
     └── inscripcion-detalle/       # Detalle y retiro
 
-public/img/talleres/               # Fotos de los talleres, nombradas por id (1.jpg, 2.jpg…)
+src/index.html                     # Metadatos, favicon y vista previa al compartir
+
+public/
+├── img/talleres/                  # Fotos de los talleres, nombradas por id (1.jpg, 2.jpg…)
+├── og-image.jpg                   # Imagen de vista previa al compartir (1200×630)
+├── favicon.svg                    # Favicon del birrete
+└── apple-touch-icon.png           # Icono para la pantalla de inicio del celular
 ```
 
 ## Autor
