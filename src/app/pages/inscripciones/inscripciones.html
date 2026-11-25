@@ -9,7 +9,7 @@
   <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 } @else {
   <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <div class="card-body border-bottom">
+    <div class="card-body pb-sm-2">
       <div class="row g-2">
         <div class="col-12 col-md-6">
           <div class="input-group">
@@ -65,7 +65,7 @@
         No hay inscripciones que coincidan con la búsqueda.
       </div>
     } @else {
-      <div class="table-responsive">
+      <div class="table-responsive tabla-historial-contenedor">
         <table class="table table-hover align-middle mb-0 tabla-historial">
           <thead>
             <tr>
@@ -116,7 +116,7 @@
           </tbody>
         </table>
       </div>
-      <div class="card-footer bg-white border-top py-3 px-3 px-sm-4">
+      <div class="card-footer bg-white py-3 tabla-historial-pie">
         <app-paginador
           [total]="filtradas().length"
           [porPagina]="porPagina"
