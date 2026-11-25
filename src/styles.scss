@@ -57,13 +57,38 @@ main {
   @media (min-width: 576px) {
     th:first-child,
     td:first-child {
-      padding-left: 1.5rem;
+      padding-left: 1rem;
     }
 
     th:last-child,
     td:last-child {
-      padding-right: 1.5rem;
+      padding-right: 1rem;
     }
+
+    thead th:first-child {
+      border-top-left-radius: 0.6rem;
+    }
+
+    thead th:last-child {
+      border-top-right-radius: 0.6rem;
+    }
+  }
+}
+
+// Margen lateral para que la tabla no quede pegada a los bordes de la tarjeta
+.tabla-historial-contenedor {
+  @media (min-width: 576px) {
+    padding-inline: 1rem;
+  }
+}
+
+.tabla-historial-pie {
+  border-top: 1px solid #eef2f6;
+  padding-inline: 1rem;
+
+  @media (min-width: 576px) {
+    margin-inline: 1rem;
+    padding-inline: 1rem;
   }
 }
 
