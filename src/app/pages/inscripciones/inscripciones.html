@@ -1,68 +1,89 @@
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-  <h2 class="mb-0">Mis inscripciones</h2>
-  <select
-    class="form-select w-auto"
-    [value]="estado()"
-    (change)="filtrarPorEstado($any($event.target).value)"
-  >
-    <option value="">Todos los estados</option>
-    <option value="Activa">Activas</option>
-    <option value="Retirada">Retiradas</option>
-  </select>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <div>
+    <h2 class="mb-1">Mis inscripciones</h2>
+    @if (!cargando()) {
+      <p class="text-muted mb-0">{{ inscripciones().length }} inscripción(es) registrada(s)</p>
+    }
+  </div>
+  <div class="input-group w-auto">
+    <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+    <select
+      class="form-select"
+      [value]="estado()"
+      (change)="filtrarPorEstado($any($event.target).value)"
+      aria-label="Filtrar por estado"
+    >
+      <option value="">Todos los estados</option>
+      <option value="Activa">Activas</option>
+      <option value="Retirada">Retiradas</option>
+    </select>
+  </div>
 </div>
 
 @if (cargando()) {
   <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 } @else if (filtradas().length === 0) {
-  <div class="alert alert-info">No hay inscripciones para mostrar.</div>
+  <div class="alert alert-info"><i class="bi bi-info-circle me-1"></i>No hay inscripciones para mostrar.</div>
 } @else {
-  <div class="table-responsive">
-    <table class="table table-hover align-middle">
-      <thead class="table-light">
-        <tr>
-          <th class="d-none d-md-table-cell">#</th>
-          <th>Fecha</th>
-          <th>Estudiante</th>
-          <th>Taller</th>
-          <th>Estado</th>
-          <th class="text-center"><span class="d-none d-sm-inline">Acciones</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (i of paginadas(); track i.id) {
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0 tabla-historial">
+        <thead>
           <tr>
-            <td class="d-none d-md-table-cell">{{ i.id }}</td>
-            <td class="text-nowrap">
-              <span class="d-none d-md-inline">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
-              <span class="d-md-none">{{ i.fecha | date: 'dd/MM/yy' }}</span>
-            </td>
-            <td>{{ i.estudiante | titlecase }}</td>
-            <td>{{ i.tallerNombre }}</td>
-            <td>
-              <span class="badge" [ngClass]="i.estado === 'Activa' ? 'text-bg-success' : 'text-bg-secondary'">
-                {{ i.estado }}
-              </span>
-            </td>
-            <td class="text-center">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-primary"
-                (click)="verDetalle(i)"
-                title="Ver detalle"
-                [attr.aria-label]="'Ver detalle de la inscripción ' + i.id"
-              >
-                <i class="bi bi-eye"></i>
-              </button>
-            </td>
+            <th class="d-none d-md-table-cell">#</th>
+            <th>Fecha</th>
+            <th>Estudiante</th>
+            <th>Taller</th>
+            <th>Estado</th>
+            <th class="text-center"><span class="d-none d-sm-inline">Acciones</span></th>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (i of paginadas(); track i.id) {
+            <tr>
+              <td class="d-none d-md-table-cell text-muted">{{ i.id }}</td>
+              <td class="text-nowrap text-muted">
+                <span class="d-none d-md-inline">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
+                <span class="d-none d-sm-inline d-md-none">{{ i.fecha | date: 'dd/MM/yy' }}</span>
+                <span class="d-sm-none">{{ i.fecha | date: 'dd/MM' }}</span>
+              </td>
+              <td class="fw-semibold">{{ i.estudiante | titlecase }}</td>
+              <td>{{ i.tallerNombre }}</td>
+              <td>
+                <span
+                  class="badge rounded-pill border"
+                  [ngClass]="
+                    i.estado === 'Activa'
+                      ? 'bg-success-subtle text-success-emphasis border-success-subtle'
+                      : 'bg-secondary-subtle text-secondary-emphasis border-secondary-subtle'
+                  "
+                >
+                  {{ i.estado }}
+                </span>
+              </td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="verDetalle(i)"
+                  title="Ver detalle"
+                  [attr.aria-label]="'Ver detalle de la inscripción ' + i.id"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer bg-white border-top py-3 px-3 px-sm-4">
+      <app-paginador
+        [total]="filtradas().length"
+        [porPagina]="porPagina"
+        [pagina]="pagina()"
+        (cambiarPagina)="pagina.set($event)"
+      />
+    </div>
   </div>
-  <app-paginador
-    [total]="filtradas().length"
-    [porPagina]="porPagina"
-    [pagina]="pagina()"
-    (cambiarPagina)="pagina.set($event)"
-  />
 }
