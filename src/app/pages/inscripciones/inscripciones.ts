@@ -17,13 +17,25 @@ export class Inscripciones implements OnInit {
   readonly porPagina = 5;
 
   inscripciones = signal<Inscripcion[]>([]);
+  busqueda = signal('');
   estado = signal<'' | EstadoInscripcion>('');
   pagina = signal(1);
   cargando = signal(true);
 
-  filtradas = computed(() =>
-    this.inscripciones().filter((i) => !this.estado() || i.estado === this.estado()),
-  );
+  hayFiltros = computed(() => this.busqueda().trim() !== '' || this.estado() !== '');
+
+  // La búsqueda por estudiante o taller funciona junto con el filtro de estado
+  filtradas = computed(() => {
+    const texto = this.busqueda().trim().toLowerCase();
+    const estado = this.estado();
+    return this.inscripciones().filter(
+      (i) =>
+        (!estado || i.estado === estado) &&
+        (!texto ||
+          i.estudiante.toLowerCase().includes(texto) ||
+          i.tallerNombre.toLowerCase().includes(texto)),
+    );
+  });
 
   paginadas = computed(() => {
     const inicio = (this.pagina() - 1) * this.porPagina;
@@ -35,8 +47,19 @@ export class Inscripciones implements OnInit {
     this.cargando.set(false);
   }
 
+  buscar(texto: string) {
+    this.busqueda.set(texto);
+    this.pagina.set(1);
+  }
+
   filtrarPorEstado(estado: '' | EstadoInscripcion) {
     this.estado.set(estado);
+    this.pagina.set(1);
+  }
+
+  limpiar() {
+    this.busqueda.set('');
+    this.estado.set('');
     this.pagina.set(1);
   }
 

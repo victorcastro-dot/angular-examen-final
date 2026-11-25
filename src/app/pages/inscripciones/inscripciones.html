@@ -1,89 +1,129 @@
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
-  <div>
-    <h2 class="mb-1">Mis inscripciones</h2>
-    @if (!cargando()) {
-      <p class="text-muted mb-0">{{ inscripciones().length }} inscripción(es) registrada(s)</p>
-    }
-  </div>
-  <div class="input-group w-auto">
-    <span class="input-group-text"><i class="bi bi-funnel"></i></span>
-    <select
-      class="form-select"
-      [value]="estado()"
-      (change)="filtrarPorEstado($any($event.target).value)"
-      aria-label="Filtrar por estado"
-    >
-      <option value="">Todos los estados</option>
-      <option value="Activa">Activas</option>
-      <option value="Retirada">Retiradas</option>
-    </select>
-  </div>
+<div class="mb-3">
+  <h2 class="mb-1">Mis inscripciones</h2>
+  @if (!cargando()) {
+    <p class="text-muted mb-0">{{ inscripciones().length }} inscripción(es) registrada(s)</p>
+  }
 </div>
 
 @if (cargando()) {
   <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
-} @else if (filtradas().length === 0) {
-  <div class="alert alert-info"><i class="bi bi-info-circle me-1"></i>No hay inscripciones para mostrar.</div>
 } @else {
   <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0 tabla-historial">
-        <thead>
-          <tr>
-            <th class="d-none d-md-table-cell">#</th>
-            <th>Fecha</th>
-            <th>Estudiante</th>
-            <th>Taller</th>
-            <th>Estado</th>
-            <th class="text-center"><span class="d-none d-sm-inline">Acciones</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (i of paginadas(); track i.id) {
+    <div class="card-body border-bottom">
+      <div class="row g-2">
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Buscar por estudiante o taller..."
+              [value]="busqueda()"
+              (input)="buscar($any($event.target).value)"
+              aria-label="Buscar por estudiante o taller"
+            />
+          </div>
+        </div>
+        <div class="col col-md-4">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+            <select
+              class="form-select"
+              [value]="estado()"
+              (change)="filtrarPorEstado($any($event.target).value)"
+              aria-label="Filtrar por estado"
+            >
+              <option value="">Todos los estados</option>
+              <option value="Activa">Activas</option>
+              <option value="Retirada">Retiradas</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-auto col-md-2 d-grid">
+          <button
+            type="button"
+            class="btn btn-limpiar"
+            [disabled]="!hayFiltros()"
+            (click)="limpiar()"
+            title="Quitar búsqueda y filtro"
+            aria-label="Limpiar filtros"
+          >
+            <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-sm-inline ms-1">Limpiar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    @if (inscripciones().length === 0) {
+      <div class="text-center text-muted py-5 px-3">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        Todavía no hay inscripciones.
+      </div>
+    } @else if (filtradas().length === 0) {
+      <div class="text-center text-muted py-5 px-3">
+        <i class="bi bi-search fs-1 d-block mb-2"></i>
+        No hay inscripciones que coincidan con la búsqueda.
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 tabla-historial">
+          <thead>
             <tr>
-              <td class="d-none d-md-table-cell text-muted">{{ i.id }}</td>
-              <td class="text-nowrap text-muted">
-                <span class="d-none d-md-inline">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
-                <span class="d-none d-sm-inline d-md-none">{{ i.fecha | date: 'dd/MM/yy' }}</span>
-                <span class="d-sm-none">{{ i.fecha | date: 'dd/MM' }}</span>
-              </td>
-              <td class="fw-semibold">{{ i.estudiante | titlecase }}</td>
-              <td>{{ i.tallerNombre }}</td>
-              <td>
-                <span
-                  class="badge rounded-pill border"
-                  [ngClass]="
-                    i.estado === 'Activa'
-                      ? 'bg-success-subtle text-success-emphasis border-success-subtle'
-                      : 'bg-secondary-subtle text-secondary-emphasis border-secondary-subtle'
-                  "
-                >
-                  {{ i.estado }}
-                </span>
-              </td>
-              <td class="text-center">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  (click)="verDetalle(i)"
-                  title="Ver detalle"
-                  [attr.aria-label]="'Ver detalle de la inscripción ' + i.id"
-                >
-                  <i class="bi bi-eye"></i>
-                </button>
-              </td>
+              <th class="d-none d-md-table-cell">#</th>
+              <th>Fecha</th>
+              <th>Estudiante</th>
+              <th>Taller</th>
+              <th>Estado</th>
+              <th class="text-center"><span class="d-none d-sm-inline">Acciones</span></th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-    <div class="card-footer bg-white border-top py-3 px-3 px-sm-4">
-      <app-paginador
-        [total]="filtradas().length"
-        [porPagina]="porPagina"
-        [pagina]="pagina()"
-        (cambiarPagina)="pagina.set($event)"
-      />
-    </div>
+          </thead>
+          <tbody>
+            @for (i of paginadas(); track i.id) {
+              <tr>
+                <td class="d-none d-md-table-cell text-muted">{{ i.id }}</td>
+                <td class="text-nowrap text-muted">
+                  <span class="d-none d-md-inline">{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
+                  <span class="d-none d-sm-inline d-md-none">{{ i.fecha | date: 'dd/MM/yy' }}</span>
+                  <span class="d-sm-none">{{ i.fecha | date: 'dd/MM' }}</span>
+                </td>
+                <td class="fw-semibold">{{ i.estudiante | titlecase }}</td>
+                <td>{{ i.tallerNombre }}</td>
+                <td>
+                  <span
+                    class="badge rounded-pill border"
+                    [ngClass]="
+                      i.estado === 'Activa'
+                        ? 'bg-success-subtle text-success-emphasis border-success-subtle'
+                        : 'bg-secondary-subtle text-secondary-emphasis border-secondary-subtle'
+                    "
+                  >
+                    {{ i.estado }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="verDetalle(i)"
+                    title="Ver detalle"
+                    [attr.aria-label]="'Ver detalle de la inscripción ' + i.id"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer bg-white border-top py-3 px-3 px-sm-4">
+        <app-paginador
+          [total]="filtradas().length"
+          [porPagina]="porPagina"
+          [pagina]="pagina()"
+          (cambiarPagina)="pagina.set($event)"
+        />
+      </div>
+    }
   </div>
 }
