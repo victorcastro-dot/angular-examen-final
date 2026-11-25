@@ -19,21 +19,21 @@ main {
 }
 
 .tabla-historial {
-  --bs-table-hover-bg: #f0fdfa;
+  --bs-table-hover-bg: #f8fafc;
 
   thead th {
-    background-color: #f0fdfa;
-    color: #0f766e;
+    background-color: #f8fafc;
+    color: #64748b;
     font-size: 0.78rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid #99f6e4;
+    border-bottom: 1px solid #e2e8f0;
     padding-block: 0.9rem;
   }
 
   tbody td {
-    border-color: #e8efee;
+    border-color: #eef2f6;
     padding-block: 0.85rem;
   }
 
